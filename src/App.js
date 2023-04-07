@@ -51,14 +51,31 @@ function App() {
    try {
       const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonName}`);
       const data = await response.json();
-      setPokemonData(data);
+      console.log(data.height);
       setIsLoading(false);
       setError(null);
    } catch(err) {
       setIsLoading(false);
-      setPokemonData([]);
       setError('Failed to fetch Pokemon details.');
    }
+   return(     
+   <table style={{ float: "right", textAlign: "right" }} >
+   <thead>
+         <tr>
+            <th>Details</th>
+         </tr>
+   </thead>
+        <tbody>
+         <tr>
+            <td style={{ padding: "50px" }}>{"ability"}</td>
+            <td style={{ padding: "50px" }}>{"stats"}</td>
+         </tr>
+         <tr>
+            <td style={{ padding: "50px" }}>{"data.height"}</td>
+            <td style={{ padding: "50px" }}>{"weight"}</td>
+         </tr>
+        </tbody>
+   </table>)
 }
 
   return (
@@ -85,23 +102,7 @@ function App() {
       </table>
       
       )}
-      <table style={{ float: "right", textAlign: "right" }} >
-      <thead>
-            <tr>
-               <th>Details</th>
-            </tr>
-      </thead>
-           <tbody>
-            <tr>
-               <td style={{ padding: "50px" }}>{"ability"}</td>
-               <td style={{ padding: "50px" }}>{"stats"}</td>
-            </tr>
-            <tr>
-               <td style={{ padding: "50px" }}>{"height"}</td>
-               <td style={{ padding: "50px" }}>{"weight"}</td>
-            </tr>
-           </tbody>
-      </table>
+
       <button >{"<"}</button>
       <button onClick={fetchPokemonData2}>{">"}</button>
     </div>
