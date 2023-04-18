@@ -6,6 +6,7 @@ function App() {
   const [error, setError] = useState(null);
   const [selectedPokemon, setSelectedPokemon] = useState(null);
   const [startIndex, setStartIndex] = useState(0);
+  const [pageNumber, setPageNumber] = useState(0);
   const myStyle = {
     color: "white",
     backgroundColor: "DodgerBlue",
@@ -14,7 +15,8 @@ function App() {
     "margin-top": "30px",
     "font-weight": "bold",
     "font-size": "30px",
-    fontFamily: "Sans-Serif"
+    fontFamily: "Sans-Serif",
+    borderRadius: "20px"
   };
   
   async function fetchPokemonDetails(url) {
@@ -42,7 +44,7 @@ function App() {
     try {
       const limit = 20;
       const offset = startIndex;
-      const response = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=${offset}`);
+      const response = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=${limit * pageNumber}`);
       const data = await response.json();
       setPokemonData(data.results);
       setIsLoading(false);
@@ -55,13 +57,17 @@ function App() {
   }
   
   const handlePrevClick = () => {
-    const prevStartIndex = Math.max(0, startIndex - 20);
+    const prevPageNumber = Math.max(0, pageNumber - 1);
+    setPageNumber(prevPageNumber);
+    const prevStartIndex = prevPageNumber * 20;
     console.log(prevStartIndex)
     fetchPokemonData(prevStartIndex);
   };
   
   const handleNextClick = () => {
-    const nextStartIndex = startIndex + 20;
+    const nextPageNumber = pageNumber + 1;
+    setPageNumber(nextPageNumber);
+    const nextStartIndex = nextPageNumber * 20;
     console.log(nextStartIndex)
     fetchPokemonData(nextStartIndex);
   };
@@ -78,9 +84,9 @@ function App() {
         <p>{error}</p>
       ) : (
         <div>
-           <button onClick={handlePrevClick}>{"<"}</button>
-           <button onClick={handleNextClick}>{">"}</button>
-          <table style={{ display: "inline-block", textAlign: "center" }}>
+           <button style={{ backgroundColor: "DodgerBlue","font-size": "30px",padding: "10px","margin-left": "20px", borderRadius: "30px"}} onClick={handlePrevClick}>{"<"}</button>
+           <button style={{backgroundColor: "DodgerBlue","font-size": "30px",padding: "10px","margin-left": "20px", borderRadius: "30px"}} onClick={handleNextClick}>{">"}</button>
+          <table style={{ display: "inline-block", textAlign: "center"}}>
             <tbody>
               {pokemonData.reduce((rows, key, index) => (index % 4 === 0 ? rows.push([key]) : rows[rows.length-1].push(key)) && rows, [])
                 .map((row, index) => (
